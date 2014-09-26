@@ -1,1 +1,2 @@
-Put all three files on the system path (/usr/local/bin ?)
+- Put all three files on the system path (/usr/local/bin ?)
+- Make sure to edit "mm_list_wrap/mm_list_wrap/pf_alias_mgr.py" with your DB information.
