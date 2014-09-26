@@ -4,18 +4,12 @@ import sys
 import re
 import MySQLdb
 import datetime
-import ConfigParser
-import io
 
-config_data = """
-[postfix]
-user = [CHANGE ME]
-password = [CHANGE ME]
-dbname = [CHANGE ME]
-"""
-
-config = ConfigParser.RawConfigParser()
-config.readfp(io.BytesIO(config_data))
+dict = {
+	'user'		: 'CHANGE_ME',
+	'password'	: 'CHANGE_ME',
+	'dbname'	: 'CHANGE_ME'
+}
 
 def showalias(c):
     c.execute("SELECT * FROM alias")
@@ -42,7 +36,7 @@ def rmalias(c, addr):
 
 def main(argv):
     import MySQLdb
-    db = MySQLdb.connect(user=config.get("postfix", "user"), passwd=config.get("postfix", "password"), db=config.get("postfix", "dbname"))
+    db = MySQLdb.connect(user=dict['user'], passwd=dict['password'], db=dict['dbname'])
     c = db.cursor()
     if len(argv) < 2:
         return showalias(c)
