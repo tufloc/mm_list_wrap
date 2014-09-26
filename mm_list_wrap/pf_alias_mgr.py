@@ -5,7 +5,7 @@ import re
 import MySQLdb
 import datetime
 
-dict = {
+conf = {
 	'user'		: 'CHANGE_ME',
 	'password'	: 'CHANGE_ME',
 	'dbname'	: 'CHANGE_ME'
@@ -36,7 +36,7 @@ def rmalias(c, addr):
 
 def main(argv):
     import MySQLdb
-    db = MySQLdb.connect(user=dict['user'], passwd=dict['password'], db=dict['dbname'])
+    db = MySQLdb.connect(user=conf['user'], passwd=conf['password'], db=conf['dbname'])
     c = db.cursor()
     if len(argv) < 2:
         return showalias(c)
