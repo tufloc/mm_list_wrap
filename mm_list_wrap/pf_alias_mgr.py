@@ -4,17 +4,18 @@ import sys
 import re
 import MySQLdb
 import datetime
+import ConfigParser
+import io
 
+config_data = """
+[postfix]
+user = [CHANGE ME]
+password = [CHANGE ME]
+dbname = [CHANGE ME]
+"""
 
-def get_db_from_file():
-    dbdata = {}
-    with open("/etc/postfix/mysql/virtual_alias_maps.cf", "r") as f:
-        for line in f.readlines():
-            m = re.match(r"(.*?) *= *(.*)", line)
-            if m:
-                dbdata[m.groups()[0]] = m.groups()[1]
-    return dbdata
-
+config = ConfigParser.RawConfigParser()
+config.readfp(io.BytesIO(config_data))
 
 def showalias(c):
     c.execute("SELECT * FROM alias")
@@ -40,10 +41,8 @@ def rmalias(c, addr):
     c.execute('DELETE FROM alias WHERE address = %s', [addr])
 
 def main(argv):
-    dbdata = get_db_from_file()
-
     import MySQLdb
-    db = MySQLdb.connect(user=dbdata['user'], passwd=dbdata['password'], db=dbdata['dbname'])
+    db = MySQLdb.connect(user=config.get("postfix", "user"), passwd=config.get("postfix", "password"), db=config.get("postfix", "dbname"))
     c = db.cursor()
     if len(argv) < 2:
         return showalias(c)
